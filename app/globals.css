@@ -176,3 +176,58 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 3px;
   transition: width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
+
+/* ==========================================================================
+   Light Theme Compatibility Overrides for Tailwind Utility Classes
+   ========================================================================== */
+
+/* Override hardcoded dark-mode white/gray text colors */
+.text-white {
+  color: var(--text-primary) !important;
+}
+.text-gray-300, .text-gray-400, .text-gray-500 {
+  color: var(--text-secondary) !important;
+}
+.text-gray-600, .text-slate-400, .text-slate-500 {
+  color: var(--text-muted) !important;
+}
+
+/* Ensure button and custom elements that need white text stay white */
+.btn-primary,
+.btn-danger,
+.status-badge,
+button[class*="btn-primary"],
+a[class*="btn-primary"],
+.text-white-force {
+  color: #ffffff !important;
+}
+
+/* Fix text colors inside the logo/header elements */
+.logo-text, .header-text, .text-slate-900 {
+  color: var(--text-primary) !important;
+}
+
+/* Override hardcoded white background containers */
+div[class*="bg-white/"],
+button[class*="bg-white/"],
+li[class*="bg-white/"],
+span[class*="bg-white/"] {
+  background-color: var(--bg-primary) !important;
+}
+
+/* Override hardcoded white borders to light slate borders */
+div[class*="border-white/"],
+tr[class*="border-white/"],
+td[class*="border-white/"],
+th[class*="border-white/"],
+button[class*="border-white/"] {
+  border-color: var(--border-card) !important;
+}
+
+/* Fix login/signup background layout gradients for the light theme */
+.min-h-screen[style*="#0f1117"] {
+  background: radial-gradient(ellipse at 20% 50%, rgba(79,70,229,0.06) 0%, transparent 60%), 
+              radial-gradient(ellipse at 80% 20%, rgba(16,185,129,0.04) 0%, transparent 60%), 
+              #f8fafc !important;
+}
+
