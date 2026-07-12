@@ -10,7 +10,7 @@ create schema if not exists auth;
 
 -- Create mock auth.users table if it does not exist
 create table if not exists auth.users (
-  id uuid primary key default uuid_generate_v4(),
+  id uuid primary key default gen_random_uuid(),
   email text,
   raw_user_meta_data jsonb,
   created_at timestamptz default now()
@@ -22,7 +22,7 @@ create table if not exists auth.users (
 
 -- Departments
 create table if not exists departments (
-  id            uuid primary key default uuid_generate_v4(),
+  id            uuid primary key default gen_random_uuid(),
   name          text not null,
   code          text unique not null,
   head_id       uuid,
@@ -48,7 +48,7 @@ create table if not exists profiles (
 
 -- Categories
 create table if not exists categories (
-  id     uuid primary key default uuid_generate_v4(),
+  id     uuid primary key default gen_random_uuid(),
   name   text not null,
   type   text not null check (type in ('csr_activity','challenge')),
   status text not null default 'active' check (status in ('active','inactive'))
@@ -56,7 +56,7 @@ create table if not exists categories (
 
 -- Emission Factors
 create table if not exists emission_factors (
-  id            uuid primary key default uuid_generate_v4(),
+  id            uuid primary key default gen_random_uuid(),
   activity_type text not null,
   factor_value  numeric(12,6) not null,
   unit          text not null,
@@ -65,7 +65,7 @@ create table if not exists emission_factors (
 
 -- Environmental Goals
 create table if not exists environmental_goals (
-  id            uuid primary key default uuid_generate_v4(),
+  id            uuid primary key default gen_random_uuid(),
   department_id uuid references departments(id) on delete cascade,
   metric        text not null,
   target_value  numeric(12,2) not null,
@@ -77,7 +77,7 @@ create table if not exists environmental_goals (
 
 -- ESG Policies
 create table if not exists esg_policies (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   title       text not null,
   description text,
   category    text not null,
@@ -89,7 +89,7 @@ create table if not exists esg_policies (
 
 -- Badges
 create table if not exists badges (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   name            text not null,
   description     text,
   unlock_metric   text not null check (unlock_metric in ('xp','completed_challenges')),
@@ -101,7 +101,7 @@ create table if not exists badges (
 
 -- Rewards
 create table if not exists rewards (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   name            text not null,
   description     text,
   points_required integer not null,
@@ -112,7 +112,7 @@ create table if not exists rewards (
 
 -- Org Settings (single row)
 create table if not exists org_settings (
-  id                  uuid primary key default uuid_generate_v4(),
+  id                  uuid primary key default gen_random_uuid(),
   env_weight          integer not null default 40,
   social_weight       integer not null default 30,
   gov_weight          integer not null default 30,
@@ -131,7 +131,7 @@ create table if not exists org_settings (
 );
 
 -- Insert default org settings row
-insert into org_settings (id) values (uuid_generate_v4())
+insert into org_settings (id) values (gen_random_uuid())
   on conflict do nothing;
 
 -- -------------------------------------------------------
@@ -140,7 +140,7 @@ insert into org_settings (id) values (uuid_generate_v4())
 
 -- Activity Logs (Environmental)
 create table if not exists activity_logs (
-  id            uuid primary key default uuid_generate_v4(),
+  id            uuid primary key default gen_random_uuid(),
   department_id uuid not null references departments(id) on delete cascade,
   type          text not null check (type in ('purchase','manufacturing','expense','fleet')),
   quantity      numeric(12,4) not null,
@@ -152,7 +152,7 @@ create table if not exists activity_logs (
 
 -- Carbon Transactions
 create table if not exists carbon_transactions (
-  id                uuid primary key default uuid_generate_v4(),
+  id                uuid primary key default gen_random_uuid(),
   activity_log_id   uuid references activity_logs(id) on delete cascade,
   emission_factor_id uuid references emission_factors(id) on delete set null,
   calculated_co2    numeric(14,4) not null,
@@ -164,7 +164,7 @@ create table if not exists carbon_transactions (
 
 -- CSR Activities
 create table if not exists csr_activities (
-  id            uuid primary key default uuid_generate_v4(),
+  id            uuid primary key default gen_random_uuid(),
   title         text not null,
   category_id   uuid references categories(id) on delete set null,
   department_id uuid references departments(id) on delete cascade,
@@ -175,7 +175,7 @@ create table if not exists csr_activities (
 
 -- Employee Participations (Social)
 create table if not exists employee_participations (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   employee_id     uuid not null references profiles(id) on delete cascade,
   csr_activity_id uuid not null references csr_activities(id) on delete cascade,
   proof_url       text,
@@ -189,7 +189,7 @@ create table if not exists employee_participations (
 
 -- Challenges
 create table if not exists challenges (
-  id                uuid primary key default uuid_generate_v4(),
+  id                uuid primary key default gen_random_uuid(),
   title             text not null,
   category_id       uuid references categories(id) on delete set null,
   description       text,
@@ -205,7 +205,7 @@ create table if not exists challenges (
 
 -- Challenge Participations
 create table if not exists challenge_participations (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   challenge_id    uuid not null references challenges(id) on delete cascade,
   employee_id     uuid not null references profiles(id) on delete cascade,
   progress        integer not null default 0 check (progress between 0 and 100),
@@ -219,7 +219,7 @@ create table if not exists challenge_participations (
 
 -- Policy Acknowledgements
 create table if not exists policy_acknowledgements (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   policy_id       uuid not null references esg_policies(id) on delete cascade,
   employee_id     uuid not null references profiles(id) on delete cascade,
   acknowledged_at timestamptz default now(),
@@ -228,7 +228,7 @@ create table if not exists policy_acknowledgements (
 
 -- Audits
 create table if not exists audits (
-  id               uuid primary key default uuid_generate_v4(),
+  id               uuid primary key default gen_random_uuid(),
   title            text not null,
   department_id    uuid references departments(id) on delete cascade,
   date             date not null,
@@ -239,7 +239,7 @@ create table if not exists audits (
 
 -- Compliance Issues
 create table if not exists compliance_issues (
-  id          uuid primary key default uuid_generate_v4(),
+  id          uuid primary key default gen_random_uuid(),
   audit_id    uuid references audits(id) on delete cascade,
   severity    text not null default 'medium' check (severity in ('low','medium','high','critical')),
   description text not null,
@@ -252,7 +252,7 @@ create table if not exists compliance_issues (
 
 -- Notifications
 create table if not exists notifications (
-  id         uuid primary key default uuid_generate_v4(),
+  id         uuid primary key default gen_random_uuid(),
   user_id    uuid not null references profiles(id) on delete cascade,
   type       text not null,
   message    text not null,
@@ -262,7 +262,7 @@ create table if not exists notifications (
 
 -- Reward Redemptions
 create table if not exists reward_redemptions (
-  id              uuid primary key default uuid_generate_v4(),
+  id              uuid primary key default gen_random_uuid(),
   employee_id     uuid not null references profiles(id) on delete cascade,
   reward_id       uuid not null references rewards(id) on delete cascade,
   points_deducted integer not null,
