@@ -5,16 +5,22 @@
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
 
--- Create auth schema if it does not exist (e.g. for non-Supabase local Postgres testing)
-create schema if not exists auth;
+-- Create auth schema and users table mock ONLY if they don't already exist (avoids permission errors in Supabase)
+do $$
+begin
+  if not exists (select 1 from pg_namespace where nspname = 'auth') then
+    create schema auth;
+  end if;
 
--- Create mock auth.users table if it does not exist
-create table if not exists auth.users (
-  id uuid primary key default gen_random_uuid(),
-  email text,
-  raw_user_meta_data jsonb,
-  created_at timestamptz default now()
-);
+  if not exists (select 1 from pg_tables where schemaname = 'auth' and tablename = 'users') then
+    create table auth.users (
+      id uuid primary key default gen_random_uuid(),
+      email text,
+      raw_user_meta_data jsonb,
+      created_at timestamptz default now()
+    );
+  end if;
+end $$;
 
 -- -------------------------------------------------------
 -- MASTER DATA TABLES
