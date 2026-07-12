@@ -4,13 +4,25 @@ import { cookies } from 'next/headers'
 const fallbackUrl = 'https://placeholder-url-for-build.supabase.co'
 const fallbackKey = 'placeholder-key'
 
+function findEnvVar(suffix: string): string | undefined {
+  if (typeof process === 'undefined' || !process.env) return undefined
+  if (process.env[suffix]) return process.env[suffix]
+  const publicDirect = `NEXT_PUBLIC_${suffix}`
+  if (process.env[publicDirect]) return process.env[publicDirect]
+  
+  const matchingKey = Object.keys(process.env).find(key => 
+    key.endsWith(suffix) && process.env[key]
+  )
+  return matchingKey ? process.env[matchingKey] : undefined
+}
+
 function getEnvUrl() {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const url = findEnvVar('SUPABASE_URL')
   return url && url.startsWith('http') ? url : fallbackUrl
 }
 
 function getEnvKey(anon = true) {
-  const key = anon ? process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY : process.env.SUPABASE_SERVICE_ROLE_KEY
+  const key = anon ? findEnvVar('SUPABASE_ANON_KEY') : findEnvVar('SUPABASE_SERVICE_ROLE_KEY')
   return key && key.length > 20 ? key : fallbackKey
 }
 
