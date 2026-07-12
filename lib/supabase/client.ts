@@ -16,11 +16,17 @@ function findEnvVar(suffix: string): string | undefined {
 }
 
 function getEnvUrl() {
+  if (typeof window !== 'undefined' && (window as any).__SUPABASE_URL__) {
+    return (window as any).__SUPABASE_URL__
+  }
   const url = findEnvVar('SUPABASE_URL')
   return url && url.startsWith('http') ? url : fallbackUrl
 }
 
 function getEnvKey() {
+  if (typeof window !== 'undefined' && (window as any).__SUPABASE_ANON_KEY__) {
+    return (window as any).__SUPABASE_ANON_KEY__
+  }
   const key = findEnvVar('SUPABASE_ANON_KEY')
   return key && key.length > 20 ? key : fallbackKey
 }
