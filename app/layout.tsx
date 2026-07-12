@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 import './globals.css'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'EcoSphere — ESG Management Platform',
   description: 'Track, measure, and improve your organization\'s Environmental, Social, and Governance performance with gamification.',
