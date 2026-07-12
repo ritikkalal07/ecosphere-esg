@@ -20,3 +20,10 @@ Thumbs.db
 # IDE
 .vscode/
 *.swp
+
+# Build caches & metadata
+*.tsbuildinfo
+tsconfig.tsbuildinfo
+AGENTS.md
+CLAUDE.md
+
