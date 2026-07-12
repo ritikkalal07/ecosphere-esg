@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '@/lib/supabase/client'
 import { Zap, Mail, Lock, Loader2 } from 'lucide-react'
 
@@ -104,6 +105,12 @@ export default function LoginPage() {
               {loading ? 'Signing in…' : 'Sign in'}
             </button>
           </form>
+
+          <div className="mt-6 pt-4 border-t border-white/5 text-center">
+            <Link href="/signup" className="text-xs text-emerald-400 hover:text-emerald-300 font-medium inline-flex items-center gap-1.5">
+              Don't have an account? Sign Up
+            </Link>
+          </div>
         </div>
 
         <p className="text-center text-xs text-gray-600 mt-6">

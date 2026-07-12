@@ -267,12 +267,17 @@ $$;
 create or replace function fn_handle_new_user()
 returns trigger language plpgsql security definer as $$
 begin
-  insert into profiles (id, email, full_name, role)
+  insert into profiles (id, email, full_name, role, department_id)
   values (
     new.id,
     new.email,
     coalesce(new.raw_user_meta_data->>'full_name', split_part(new.email,'@',1)),
-    coalesce(new.raw_user_meta_data->>'role', 'employee')
+    coalesce(new.raw_user_meta_data->>'role', 'employee'),
+    case 
+      when new.raw_user_meta_data->>'department_id' is not null and new.raw_user_meta_data->>'department_id' <> '' 
+      then (new.raw_user_meta_data->>'department_id')::uuid 
+      else null 
+    end
   );
   return new;
 end;
