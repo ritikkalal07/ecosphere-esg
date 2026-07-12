@@ -5,6 +5,17 @@
 -- Enable UUID extension
 create extension if not exists "uuid-ossp";
 
+-- Create auth schema if it does not exist (e.g. for non-Supabase local Postgres testing)
+create schema if not exists auth;
+
+-- Create mock auth.users table if it does not exist
+create table if not exists auth.users (
+  id uuid primary key default uuid_generate_v4(),
+  email text,
+  raw_user_meta_data jsonb,
+  created_at timestamptz default now()
+);
+
 -- -------------------------------------------------------
 -- MASTER DATA TABLES
 -- -------------------------------------------------------
