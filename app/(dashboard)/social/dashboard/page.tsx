@@ -87,7 +87,7 @@ export default function SocialDashboard() {
                 <XAxis dataKey="name" tick={{ fill: '#6b7280', fontSize: 11 }} />
                 <YAxis domain={[0, 100]} tick={{ fill: '#6b7280', fontSize: 11 }} unit="%" />
                 <Tooltip contentStyle={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#e4e7ec' }}
-                  formatter={(v: number) => [`${v}%`, 'Approval Rate']} />
+                  formatter={(v: any) => [`${v}%`, 'Approval Rate']} />
                 <Bar dataKey="rate" radius={[6, 6, 0, 0]} fill="#3b82f6" />
               </BarChart>
             </ResponsiveContainer>

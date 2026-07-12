@@ -103,7 +103,7 @@ export default function EnvironmentalDashboard() {
               <XAxis dataKey="month" tick={{ fill: '#6b7280', fontSize: 11 }} />
               <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} />
               <Tooltip contentStyle={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#e4e7ec' }}
-                formatter={(v: number) => [`${v} kg CO₂e`, 'Emissions']} />
+                formatter={(v: any) => [`${v} kg CO₂e`, 'Emissions']} />
               <Line type="monotone" dataKey="co2" stroke="#10b981" strokeWidth={2.5} dot={{ fill: '#10b981', r: 4 }} />
             </LineChart>
           </ResponsiveContainer>
@@ -122,7 +122,7 @@ export default function EnvironmentalDashboard() {
               <XAxis dataKey="name" tick={{ fill: '#6b7280', fontSize: 11 }} />
               <YAxis tick={{ fill: '#6b7280', fontSize: 11 }} />
               <Tooltip contentStyle={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#e4e7ec' }}
-                formatter={(v: number) => [`${v} kg CO₂e`, 'Emissions']} />
+                formatter={(v: any) => [`${v} kg CO₂e`, 'Emissions']} />
               <Bar dataKey="co2" radius={[6,6,0,0]}>
                 {deptData.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Bar>

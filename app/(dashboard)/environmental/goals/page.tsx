@@ -40,7 +40,7 @@ function GoalProgress({ goal }: { goal: EnvironmentalGoal }) {
 
 export default function GoalsPage() {
   const [goals, setGoals] = useState<EnvironmentalGoal[]>([])
-  const [departments, setDepartments] = useState<Department[]>([])
+  const [departments, setDepartments] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [showForm, setShowForm] = useState(false)
   const [saving, setSaving] = useState(false)

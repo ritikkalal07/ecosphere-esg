@@ -6,7 +6,7 @@ import { Plus, Loader2, X, CheckCircle } from 'lucide-react'
 import type { Department, OrgSettings } from '@/lib/types'
 
 export default function ActivityLogPage() {
-  const [departments, setDepartments] = useState<Department[]>([])
+  const [departments, setDepartments] = useState<any[]>([])
   const [settings, setSettings] = useState<OrgSettings | null>(null)
   const [logs, setLogs] = useState<any[]>([])
   const [loading, setLoading] = useState(true)

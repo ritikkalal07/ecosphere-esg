@@ -112,7 +112,7 @@ export default function DashboardClient({ deptScores, orgSettings, overallScore,
                 <YAxis type="category" dataKey="department_name" tick={{ fill: '#9ca3af', fontSize: 11 }} width={90} />
                 <Tooltip
                   contentStyle={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#e4e7ec' }}
-                  formatter={(v: number) => [`${v.toFixed(1)}`, 'Score']}
+                  formatter={(v: any) => [`${parseFloat(v).toFixed(1)}`, 'Score']}
                 />
                 <Bar dataKey="total_score" radius={[0, 6, 6, 0]}>
                   {deptScores.map((_, i) => (

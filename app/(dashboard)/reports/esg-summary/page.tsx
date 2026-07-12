@@ -71,7 +71,7 @@ export default function ESGSummaryReport() {
               <XAxis dataKey="department_name" tick={{ fill: '#6b7280', fontSize: 11 }} />
               <YAxis domain={[0, 100]} tick={{ fill: '#6b7280', fontSize: 11 }} />
               <Tooltip contentStyle={{ background: '#1a1d27', border: '1px solid rgba(255,255,255,0.1)', borderRadius: 10, color: '#e4e7ec' }}
-                formatter={(v: number) => [`${v.toFixed(1)}`, 'Total Score']} />
+                formatter={(v: any) => [`${parseFloat(v).toFixed(1)}`, 'Total Score']} />
               <Bar dataKey="total_score" radius={[6, 6, 0, 0]}>
                 {scores.map((_, i) => <Cell key={i} fill={COLORS[i % COLORS.length]} />)}
               </Bar>
