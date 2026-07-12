@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter, usePathname } from 'next/navigation'
 import { createClient } from '@/lib/supabase/client'
 import NotificationBell from './NotificationBell'
-import { LogOut, User } from 'lucide-react'
+import { LogOut, User, Menu } from 'lucide-react'
 
 const breadcrumbs: Record<string, string> = {
   '/dashboard': 'Dashboard',
@@ -16,7 +16,11 @@ const breadcrumbs: Record<string, string> = {
   '/settings': 'Settings',
 }
 
-export default function Header() {
+interface HeaderProps {
+  onMenuClick?: () => void
+}
+
+export default function Header({ onMenuClick }: HeaderProps) {
   const [profile, setProfile] = useState<{ full_name: string; role: string } | null>(null)
   const router = useRouter()
   const pathname = usePathname()
@@ -47,7 +51,7 @@ export default function Header() {
 
   return (
     <header
-      className="flex items-center justify-between px-6 py-4 sticky top-0 z-20"
+      className="flex items-center justify-between px-4 md:px-6 py-4 sticky top-0 z-20"
       style={{
         background: 'rgba(248, 250, 252, 0.95)',
         borderBottom: '1px solid var(--border-card)',
@@ -55,13 +59,24 @@ export default function Header() {
       }}
     >
       {/* Breadcrumb */}
-      <div>
-        <h1 className="text-base font-semibold text-slate-900">
-          {section?.[1] ?? 'EcoSphere'}
-        </h1>
-        <p className="text-xs text-slate-500 mt-0.5">
-          {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-        </p>
+      <div className="flex items-center">
+        {onMenuClick && (
+          <button 
+            id="mobile-menu-toggle"
+            onClick={onMenuClick} 
+            className="md:hidden mr-3 p-1.5 rounded-lg hover:bg-slate-100 text-slate-500 hover:text-slate-700 transition-colors"
+          >
+            <Menu size={20} />
+          </button>
+        )}
+        <div>
+          <h1 className="text-base font-semibold text-slate-900">
+            {section?.[1] ?? 'EcoSphere'}
+          </h1>
+          <p className="text-xs text-slate-500 mt-0.5">
+            {new Date().toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+          </p>
+        </div>
       </div>
 
       {/* Right side */}
